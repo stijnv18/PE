@@ -2,7 +2,7 @@ import os
 from PIL import Image
 import pytesseract
 import re
-
+import time as t
 pytesseract.pytesseract.tesseract_cmd = os.path.expandvars(r"%ProgramFiles%\Tesseract-OCR\tesseract.exe")
 
 # Function to filter output based on confidence threshold
@@ -30,10 +30,14 @@ def extract_postcode(filtered_text):
 image_path = "test.png"
 
 # Extract text from the image
-text = pytesseract.image_to_string(Image.open(image_path))
+#text = pytesseract.image_to_string(Image.open(image_path))
 
 # Filter the output based on confidence threshold
-data = pytesseract.image_to_data(Image.open("test.png"))
+startime = t.time()
+for i in range(100):
+    data = pytesseract.image_to_data(Image.open("test.png"))
+stoptime = t.time()
+print(stoptime-startime)
 filtered_text = filter_output(data, 50)
 postcodes = extract_postcode(filtered_text.split("\n:")[0])
 print(postcodes)
